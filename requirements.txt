@@ -1,0 +1,4 @@
+google.genai
+Flask
+google-genai # atau google-genai, sesuaikan dengan library yang Anda pakai
+# Tambahkan package lain jika ada
