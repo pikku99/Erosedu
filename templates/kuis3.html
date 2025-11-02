@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Edukasi Seksual Interaktif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="F:\erosedu\static\img\e.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'white': '#FFFFFF',
+                        'yellow-bright': '#FEE034',
+                        'yellow-light': '#FEDF2E',
+                        'yellow-gold': '#FEDF2D',
+                        'cream-light': '#FEF9DB',
+                        'gray-light': '#F0F0F1',
+                        'yellow-pastel': '#FDE764',
+                        'yellow-lemon': '#FEED8C',
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-cream-light min-h-screen py-8">
+    <div class="max-w-3xl mx-auto px-4">
+        <!-- Header -->
+        <div class="mb-8 container mx-auto text-center"> 
+                <a href="index.html" class="inline-flex items-center  text-gray-800 font-medium py-1 px-2 rounded-lg home-btn ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                    </svg>
+                    Kembali ke Beranda
+                </a>
+        </div>
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-yellow-gold mb-4">Kuis Edukasi Seksual Interaktif</h1>
+            <p class="text-lg text-gray-700">Latih kemampuanmu mengenali situasi dan lakukan pilihan yang tepat untuk menjaga diri</p>
+        </header>
+
+        <div id="quiz-container">
+            <!-- Instruksi Kuis -->
+            <div id="instructions" class="bg-white rounded-2xl shadow-lg p-8 mb-8 border-2 border-yellow-pastel">
+                <h2 class="text-2xl font-semibold text-yellow-gold mb-4">Sebelum Memulai</h2>
+                <div class="space-y-3 text-gray-700">
+                    <p class="flex items-start"><span class="bg-yellow-lemon rounded-full p-1 mr-3">✓</span> Kuis ini berisi 3 situasi sehari-hari yang mungkin kamu alami</p>
+                    <p class="flex items-start"><span class="bg-yellow-lemon rounded-full p-1 mr-3">✓</span> Pilih jawaban yang menurutmu paling tepat untuk setiap situasi</p>
+                    <p class="flex items-start"><span class="bg-yellow-lemon rounded-full p-1 mr-3">✓</span> Kamu akan mendapatkan penjelasan untuk setiap jawaban</p>
+                    <p class="flex items-start"><span class="bg-yellow-lemon rounded-full p-1 mr-3">✓</span> Tidak ada jawaban yang salah - yang penting adalah kita belajar</p>
+                </div>
+                <button onclick="startQuiz()" class="mt-6 w-full bg-yellow-bright hover:bg-yellow-gold text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                    Mulai Kuis
+                </button>
+            </div>
+
+            <!-- Container untuk kuis akan dimuat di sini -->
+            <div id="quiz-content" class="hidden">
+                <!-- Kuis akan di-generate oleh JavaScript -->
+            </div>
+
+            <!-- Hasil Kuis -->
+            <div id="quiz-results" class="hidden bg-white rounded-2xl shadow-lg p-8 border-2 border-yellow-pastel">
+                <h2 class="text-2xl font-semibold text-yellow-gold mb-6 text-center">Hasil Kuis Kamu</h2>
+                <div id="results-content" class="text-center">
+                    <!-- Hasil akan diisi oleh JavaScript -->
+                </div>
+                <button onclick="resetQuiz()" class="mt-6 w-full bg-yellow-bright hover:bg-yellow-gold text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                    Main Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data kuis situasional berdasarkan prinsip pendidikan seksual untuk anak
+        const quizData = [
+            {
+                id: 1,
+                situation: "Kamu sedang belajar kelompok di rumah teman. Tiba-tiba, orang tua temanmu menyentuh pundakmu dan kemudian tangan mereka merayap ke punggungmu. Kamu merasa tidak nyaman.",
+                question: "Apa yang sebaiknya kamu lakukan?",
+                options: [
+                    {
+                        text: "Diam saja karena dia orang tua temanmu dan mungkin tidak bermaksud buruk",
+                        feedback: "Tidak disarankan. Sentuhan yang membuat tidak nyaman harus dihentikan, tidak peduli siapa yang melakukannya. Kamu berhak merasa aman.",
+                        correct: false
+                    },
+                    {
+                        text: "Segera menjauh dan katakan dengan tegas 'Stop, saya tidak nyaman!'",
+                        feedback: "Tepat! Menjauh dan berkata 'tidak' dengan tegas adalah cara terbaik melindungi diri. Berteriak atau meminta tolong juga bisa dilakukan jika diperlukan.",
+                        correct: true
+                    },
+                    {
+                        text: "Pura-pura tertawa dan mengalihkan pembicaraan",
+                        feedback: "Meski terkesan halus, ini bisa disalahartikan. Lebih baik langsung menyampaikan ketidaknyamananmu dengan jelas.",
+                        correct: false
+                    },
+                    {
+                        text: "Bercerita kepada temanmu tentang kejadian ini setelah pulang",
+                        feedback: "Penting untuk bercerita, tapi TIDAK cukup. Kamu perlu mengambil tindakan langsung untuk menghentikan sentuhan tidak nyaman saat itu juga.",
+                        correct: false
+                    }
+                ],
+                educationalNote: "Menurut prinsip pendidikan seksual, anak perlu memahami bahwa mereka berhak atas tubuhnya sendiri dan boleh menolak sentuhan tidak nyaman dari siapapun, termasuk orang dewasa yang mereka kenal [citation:2]."
+            },
+            {
+                id: 2,
+                situation: "Di perjalanan pulang sekolah, seorang kenalan lama mendekatimu dan memaksa untuk memelukmu meskipun sudah kamu tolak. Dia bilang 'Pelukan saja tidak apa-apa, kita kan kenalan'.",
+                question: "Bagaimana kamu menanggapi situasi ini?",
+                options: [
+                    {
+                        text: "Menuruti karena takut dianggap tidak sopan",
+                        feedback: "Tidak disarankan. Kesopanan tidak berarti mengorbankan perasaan nyaman dan batasan tubuhmu. Kamu berhak menolak.",
+                        correct: false
+                    },
+                    {
+                        text: "Tegas menolak sambil menjaga jarak, lalu segera pergi",
+                        feedback: "Tepat! Menjaga jarak fisik dan meninggalkan situasi yang tidak nyaman adalah cara terbaik. Ingat, tidak ada yang berhak menyentuhmu tanpa izinmu.",
+                        correct: true
+                    },
+                    {
+                        text: "Beralasan harus segera pulang dan berjanji bertemu lain waktu",
+                        feedback: "Ini bisa dilakukan, tetapi tidak cukup tegas menyampaikan batasan. Lebih baik langsung tegaskan bahwa kamu tidak nyaman dengan pelukan paksa.",
+                        correct: false
+                    },
+                    {
+                        text: "Menerima pelukan itu dengan cepat agar situasi cepat selesai",
+                        feedback: "Ini justru mengajarkan bahwa memaksa sentuhan adalah hal yang boleh dilakukan. Lebih baik tegaskan batasanmu dengan jelas.",
+                        correct: false
+                    }
+                ],
+                educationalNote: "Gangguan seksual dapat terjadi dalam berbagai bentuk, termasuk fisik dan nonverbal. Mengajarkan anak untuk memahami dan menegaskan batasan personal adalah langkah preventif penting [citation:1][citation:2]."
+            },
+            {
+                id: 3,
+                situation: "Kakak kelas di sekolahmu sering mengirimimu pesan berisi komentar tentang penampilanmu yang membuatmu malu dan tidak nyaman. Dia mengirimi foto-foto yang tidak pantas meski sudah kamu block.",
+                question: "Manakah tindakan yang paling tepat untuk situasi ini?",
+                options: [
+                    {
+                        text: "Diam saja dan berharap dia akan berhenti sendiri",
+                        feedback: "Tidak disarankan. Diam justru bisa diartikan sebagai persetujuan. Perilaku seperti ini perlu dilaporkan agar dihentikan.",
+                        correct: false
+                    },
+                    {
+                        text: "Simpan semua bukti pesan dan laporkan segera kepada guru atau orang tua",
+                        feedback: "Tepat! Menyimpan bukti dan melaporkan kepada orang dewasa yang dipercaya adalah langkah terbaik. Kamu tidak perlu menghadapi ini sendirian.",
+                        correct: true
+                    },
+                    {
+                        text: "Balas dengan kata-kata kasar agar kapok",
+                        feedback: "Membalas justru bisa memperburuk situasi dan membuatmu terlihat sebagai pihak yang bersalah. Lebih baik laporkan secara formal.",
+                        correct: false
+                    },
+                    {
+                        text: "Hapus semua pesannya dan pura-pura tidak terjadi apa-apa",
+                        feedback: "Menghapus bukti justru membuat laporanmu kurang kuat. Simpan semua bukti elektronik sebagai alat untuk melaporkan.",
+                        correct: false
+                    }
+                ],
+                educationalNote: "Segala bentuk komunikasi berunsur seksual yang tidak diinginkan, termasuk pesan elektronik, termasuk bentuk gangguan seksual secara visual dan lisan yang perlu dilaporkan [citation:1]."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let userScore = 0;
+
+        // Fungsi untuk memulai kuis
+        function startQuiz() {
+            document.getElementById('instructions').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            document.getElementById('quiz-results').classList.add('hidden');
+            
+            loadQuizQuestion(0);
+        }
+
+        // Fungsi untuk memuat pertanyaan kuis
+        function loadQuizQuestion(quizIndex) {
+            const quizContent = document.getElementById('quiz-content');
+            const currentQuiz = quizData[quizIndex];
+            
+            let optionsHTML = '';
+            currentQuiz.options.forEach((option, index) => {
+                optionsHTML += `
+                    <button onclick="selectOption(${quizIndex}, ${index})" class="w-full text-left p-4 rounded-lg border-2 border-gray-light hover:border-yellow-pastel hover:bg-yellow-lemon transition duration-200 option-button">
+                        ${option.text}
+                    </button>
+                `;
+            });
+            
+            quizContent.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-lg p-8 border-2 border-yellow-pastel">
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="bg-yellow-gold text-white px-3 py-1 rounded-full">Situasi ${currentQuiz.id}/${quizData.length}</span>
+                            <span class="text-gray-500">Pilih jawaban yang paling tepat</span>
+                        </div>
+                        <div class="bg-yellow-lemon p-4 rounded-lg mb-4">
+                            <p class="text-gray-700">${currentQuiz.situation}</p>
+                        </div>
+                        <h3 class="text-xl font-semibold text-yellow-gold">${currentQuiz.question}</h3>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6" id="options-container">
+                        ${optionsHTML}
+                    </div>
+                    
+                    <div id="feedback-${quizIndex}" class="hidden mt-6 p-4 rounded-lg"></div>
+                    
+                    <div class="flex justify-between mt-6">
+                        <button onclick="previousQuiz()" ${quizIndex === 0 ? 'disabled' : ''} class="bg-gray-light hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-200 ${quizIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
+                            Sebelumnya
+                        </button>
+                        <button onclick="nextQuiz()" id="next-button-${quizIndex}" class="hidden bg-yellow-bright hover:bg-yellow-gold text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                            ${quizIndex === quizData.length - 1 ? 'Lihat Hasil' : 'Berikutnya'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fungsi ketika opsi dipilih
+        function selectOption(quizIndex, optionIndex) {
+            const currentQuiz = quizData[quizIndex];
+            const selectedOption = currentQuiz.options[optionIndex];
+            const feedbackDiv = document.getElementById(`feedback-${quizIndex}`);
+            const nextButton = document.getElementById(`next-button-${quizIndex}`);
+            const optionButtons = document.querySelectorAll('.option-button');
+            
+            // Nonaktifkan semua tombol opsi
+            optionButtons.forEach(button => {
+                button.disabled = true;
+                button.classList.remove('hover:border-yellow-pastel', 'hover:bg-yellow-lemon');
+                button.classList.add('cursor-not-allowed');
+            });
+            
+            // Tampilkan feedback
+            feedbackDiv.classList.remove('hidden');
+            feedbackDiv.innerHTML = `
+                <div class="${selectedOption.correct ? 'bg-green-100 border border-green-400 text-green-700' : 'bg-red-100 border border-red-400 text-red-700'} px-4 py-3 rounded-lg">
+                    <p class="font-semibold">${selectedOption.correct ? 'Jawaban Tepat!' : 'Perlu diperbaiki'}</p>
+                    <p class="mt-2">${selectedOption.feedback}</p>
+                    <div class="mt-4 p-3 bg-white rounded border">
+                        <p class="text-sm text-gray-600">${currentQuiz.educationalNote}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Tampilkan tombol berikutnya
+            nextButton.classList.remove('hidden');
+            
+            // Update skor jika benar
+            if (selectedOption.correct) {
+                userScore++;
+            }
+        }
+
+        // Fungsi untuk pindah ke kuis berikutnya
+        function nextQuiz() {
+            if (currentQuizIndex < quizData.length - 1) {
+                currentQuizIndex++;
+                loadQuizQuestion(currentQuizIndex);
+            } else {
+                showResults();
+            }
+        }
+
+        // Fungsi untuk kembali ke kuis sebelumnya
+        function previousQuiz() {
+            if (currentQuizIndex > 0) {
+                currentQuizIndex--;
+                loadQuizQuestion(currentQuizIndex);
+            }
+        }
+
+        // Fungsi untuk menampilkan hasil
+        function showResults() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-results').classList.remove('hidden');
+            
+            const resultsContent = document.getElementById('results-content');
+            const percentage = Math.round((userScore / quizData.length) * 100);
+            
+            let message = '';
+            let messageColor = '';
+            
+            if (percentage >= 80) {
+                message = 'Luar Biasa! Kamu sangat paham cara melindungi diri dalam situasi berisiko.';
+                messageColor = 'text-green-600';
+            } else if (percentage >= 60) {
+                message = 'Bagus! Kamu sudah cukup paham, tapi masih perlu belajar lebih lanjut.';
+                messageColor = 'text-yellow-600';
+            } else {
+                message = 'Perlu belajar lebih lanjut tentang cara melindungi diri. Terus berlatih!';
+                messageColor = 'text-red-600';
+            }
+            
+            resultsContent.innerHTML = `
+                <div class="mb-6">
+                    <div class="inline-flex items-center justify-center w-24 h-24 bg-yellow-lemon rounded-full border-4 border-yellow-gold">
+                        <span class="text-2xl font-bold text-yellow-gold">${percentage}%</span>
+                    </div>
+                </div>
+                <h3 class="text-xl font-semibold ${messageColor} mb-4">${message}</h3>
+                <p class="text-gray-700 mb-4">Kamu menjawab <span class="font-bold">${userScore} dari ${quizData.length}</span> situasi dengan tepat.</p>
+                <div class="bg-yellow-lemon p-4 rounded-lg text-left">
+                    <p class="font-semibold text-yellow-gold mb-2">Ingat selalu:</p>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                        <li>Kamu berhak atas tubuhmu sendiri dan berhak mengatakan TIDAK</li>
+                        <li>Sentuhan yang baik vs sentuhan buruk - percayai perasaan tidak nyamanmu</li>
+                        <li>Selalu ceritakan kepada orang dewasa yang dipercaya jika mengalami situasi tidak nyaman</li>
+                        <li>Gangguan seksual bisa terjadi pada siapa saja, di mana saja, dan dalam berbagai bentuk</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Fungsi untuk mengulang kuis
+        function resetQuiz() {
+            currentQuizIndex = 0;
+            userScore = 0;
+            document.getElementById('quiz-results').classList.add('hidden');
+            startQuiz();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erosedu - Platform Digital untuk Pencegahan Kekerasan Seksual</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="F:\erosedu\static\img\e.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FEDF2E;
+            --secondary: #FDE764;
+            --accent: #f59e0b;
+            --light: #FEF9DB;
+            --dark: #2e2e2e;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .hero-bg {
+            background: white;
+            
+            
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header & Navigation -->
+    <header class=" bg-[#FEED8C]  sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-[#2e2e2e] font-serif">Erosedu</h1>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class=" text-sm nav-link-dropdown text-[#2e2e2e] hover:bg-[#ff3737] hover:text-white hover:py-0.2 px-2 hover:rounded-full hover:transition duration-300 transform hover:scale-70">Beranda</a>
+                <a href="#konten" class="text-sm nav-link-dropdown text-[#2e2e2e] hover:bg-[#ff3737] hover:text-white hover:py-0.2 px-2 hover:rounded-full hover:transition duration-300 transform hover:scale-70">Konten</a>
+                <a href="#kuis" class="text-sm nav-link-dropdown text-[#2e2e2e] hover:bg-[#ff3737] hover:text-white hover:py-0.2 px-2 hover:rounded-full hover:transition duration-300 transform hover:scale-70">Kuis</a>
+                <a href="#chatbot" class="text-sm nav-link-dropdown text-[#2e2e2e] hover:bg-[#ff3737] hover:text-white hover:py-0.2 px-2 hover:rounded-full hover:transition duration-300 transform hover:scale-70">Chatbot AI</a>
+                <a href="#pengaduan" class="text-sm nav-link-dropdown  text-[#2e2e2e] hover:bg-[#ff3737] hover:text-white hover:py-0.2 px-2 hover:rounded-full hover:transition duration-300 transform hover:scale-70">Layanan Pengaduan</a>
+            </nav>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed inset-0 bg-[#59A8F4] z-50 p-4">
+            <div class="flex justify-between items-center mb-8">
+
+                <h2 class="text-xl font-bold text-white ">Erosedu</h2>
+                <button id="close-menu" class="text-white focus:outline-none">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+
+            </div>
+            
+            <nav class="flex flex-col space-y-6">
+                <a href="#home" class="text-lg font-medium text-[#FDE764] hover:text-white py-2">Beranda</a>
+                <a href="#konten" class="text-lg font-medium text-[#FDE764] hover:text-white py-2">Konten</a>
+                <a href="#kuis" class="text-lg font-medium text-[#FDE764] hover:text-white py-2">Kuis</a>
+                <a href="#chatbot" class="text-lg font-medium text-[#FDE764] hover:text-white py-2">Chatbot AI</a>
+                <a href="#pengaduan" class="text-lg font-medium text-[#FDE764] hover:text-white py-2">Layanan Pengaduan</a>
+            </nav>
+            
+            <div class="mt-12 text-center">
+                <p class="text-gray-500">Platform Digital untuk Pencegahan Kekerasan Seksual dan Peningkatan Literasi Seksualitas Sehat</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg bg-white text-[#2e2e2e] py-8 md:py-24 relative overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10">
+            <!-- GIF di sisi kiri -->
+            <div class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1/4 pointer-events-none z-0">
+                <img src="F:\erosedu\static\img\media(1).gif" alt="GIF Statis" class="w-[120px] md:w-[185px] opacity-80">
+            </div>
+            
+            <!-- GIF di sisi kanan -->
+            <div class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/4 pointer-events-none z-0">
+                <img src="F:\erosedu\static\img\media(2).gif" alt="GIF Statis" class="w-[120px] md:w-[185px] opacity-80">
+            </div>
+            
+            <!-- Konten utama -->
+            <div class="max-w-3xl mx-auto text-center fade-in relative z-5 text-xs md:text-xs text-gray-800">
+                <h1 class="text-3xl md:text-5xl font-bold mb-4 font-serif">Hallo Selamat datang di Erosedu</h1>
+                <h2 class="text-base md:text-xl mb-8">Platform Digital untuk Pencegahan Kekerasan Seksual dan Peningkatan Literasi Seksualitas Sehat</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="tentang" class="py-12 md:py-16 bg-[#FEE034]">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-white">Latar Belakang</h2>
+                    
+                    <div class="border-2 border-black bg-white p-4 md:p-8 rounded-xl mb-6 md:mb-8 fade-in">
+                        <p class="text-gray-700 mb-4 text-sm md:text-base">
+                            Dalam beberapa tahun terakhir, Provinsi Sumatra Barat mengalami peningkatan signifikan dalam kasus kekerasan seksual terhadap anak dan remaja, termasuk pelecehan, pencabulan, hingga pemerkosaan. Data dari berbagai lembaga perlindungan anak dan kepolisian menunjukkan bahwa korban mayoritas berusia di bawah 18 tahun—kelompok usia yang rentan karena keterbatasan pemahaman tentang hak tubuh mereka, batasan interaksi sosial, serta minimnya akses terhadap edukasi seksual yang komprehensif dan sesuai usia.
+                        </p>
+                        <p class="text-gray-700 text-sm md:text-base">
+                            Ironisnya, meskipun isu ini kian mengkhawatirkan, edukasi seksual di lingkungan keluarga maupun sekolah masih dianggap tabu. Akibatnya, anak-anak dan remaja tumbuh tanpa bekal pengetahuan yang memadai untuk mengenali situasi berisiko, melindungi diri, atau mencari bantuan saat mengalami kekerasan.
+                        </p>
+                    </div>
+                    
+                    <div class="border-2 border-black bg-white p-4 md:p-8 rounded-xl fade-in">
+                        <p class="text-gray-700 text-sm md:text-base">
+                            Berdasarkan realitas tersebut, kami mengusulkan pengembangan sebuah platform digital berbasis web yang inovatif, interaktif, dan ramah anak, dengan fokus utama pada edukasi seksualitas sehat, pencegahan kekerasan seksual, serta pemahaman dasar tentang kesehatan reproduksi. Platform ini dirancang khusus untuk anak-anak dan remaja di bawah umur di Sumatra Barat, dengan konten yang disesuaikan dengan nilai budaya lokal, usia, dan tingkat pemahaman psikologis mereka.
+                        </p>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Tujuan Section -->
+    <section class="py-12 md:py-16 bg-white text-[#FEDF2E]">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 text-[#FEE034]">Tujuan Program</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    <!-- Kartu 1 -->
+                    <div class="flex flex-col items-center justify-center border-2 border-[#FEDF2E] bg-white hover:bg-[#59A8F4] hover:text-white text-gray-800 p-4 md:p-8 rounded-lg md:rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-1 h-auto md:h-64">
+                        <h3 class="text-base md:text-lg font-semibold mb-2 md:mb-3 text-center">Meningkatkan literasi seksual</h3>
+                        <p class="text-gray-600 text-xs md:text-sm text-center">Anak dan remaja usia 9–17 tahun mengenai batasan tubuh, hak pribadi, dan bentuk-bentuk kekerasan seksual.</p>
+                    </div>
+                    
+                    <!-- Kartu 2 -->
+                    <div class="flex flex-col items-center justify-center border-2 border-[#FEDF2E] bg-white hover:bg-[#59A8F4] hover:text-white text-gray-800 p-4 md:p-8 rounded-lg md:rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-1 h-auto md:h-64">
+                        <h3 class="text-base md:text-lg font-semibold mb-2 md:mb-3 text-center">Mencegah terjadinya kekerasan seksual</h3>
+                        <p class="text-gray-600 text-xs md:text-sm text-center">Melalui edukasi dini, simulasi interaktif, dan modul pengenalan situasi berisiko.</p>
+                    </div>
+                    
+                    <!-- Kartu 3 -->
+                    <div class="flex flex-col items-center justify-center border-2 border-[#FEDF2E] bg-white hover:bg-[#59A8F4] hover:text-white text-gray-800 p-4 md:p-8 rounded-lg md:rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-1 h-auto md:h-64">
+                        <h3 class="text-base md:text-lg font-semibold mb-2 md:mb-3 text-center">Memberikan akses informasi yang aman</h3>
+                        <p class="text-gray-600 text-xs md:text-sm text-center">Tentang kesehatan reproduksi, dampak penyakit menular seksual (PMS), serta konsekuensi psikologis dari kekerasan seksual.</p>
+                    </div>
+                    
+                    <!-- Kartu 4 -->
+                    <div class="flex flex-col items-center justify-center border-2 border-[#FEDF2E] bg-white hover:bg-[#59A8F4] hover:text-white text-gray-800 p-4 md:p-8 rounded-lg md:rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-1 h-auto md:h-64">
+                        <h3 class="text-base md:text-lg font-semibold mb-2 md:mb-3 text-center">Mendorong korban atau saksi</h3>
+                        <p class="text-gray-600 text-xs md:text-sm text-center">Untuk berani melapor melalui fitur bantuan darurat dan rujukan ke lembaga perlindungan anak terpercaya.</p>
+                    </div>
+                    
+                    <!-- Kartu 5 -->
+                    <div class="flex flex-col items-center justify-center border-2 border-[#FEDF2E] bg-white hover:bg-[#59A8F4] hover:text-white text-gray-800 p-4 md:p-8 rounded-lg md:rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-1 h-auto md:h-64">
+                        <h3 class="text-base md:text-lg font-semibold mb-2 md:mb-3 text-center">Melibatkan orang tua dan guru</h3>
+                        <p class="text-gray-600 text-xs md:text-sm text-center">Sebagai mitra edukasi melalui panduan pendampingan digital yang terintegrasi dalam platform.</p>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Metode Section -->
+    <section class="py-16 bg-[#FEE034]">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-[#2e2e2e]">Metode Pelaksanaan</h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 border-2 border-black rounded-xl fade-in">
+                        <h3 class="text-xl font-semibold mb-3 text-[2e2e2e] flex items-center">
+                            <i class="fas fa-film mr-3"></i> Konten Edukasi
+                        </h3>
+                        <p class="text-gray-700">Berbasis storytelling dan animasi yang menarik, disampaikan dalam bahasa Indonesia.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 border-2 border-black rounded-xl fade-in">
+                        <h3 class="text-xl font-semibold mb-3 text-[2e2e2e] flex items-center">
+                            <i class="fas fa-robot mr-3"></i> Chatbot Interaktif
+                        </h3>
+                        <p class="text-gray-700">Menjawab pertanyaan sensitif secara anonim dan aman.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 border-2 border-black rounded-xl fade-in">
+                        <h3 class="text-xl font-semibold mb-3 text-[2e2e2e] flex items-center">
+                            <i class="fas fa-gamepad mr-3"></i> Kuis & Modul
+                        </h3>
+                        <p class="text-gray-700">Pelatihan mandiri (self-paced learning) dengan sistem reward untuk mendorong partisipasi aktif.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 border-2 border-black rounded-xl fade-in">
+                        <h3 class="text-xl font-semibold mb-3 text-[2e2e2e] flex items-center">
+                            <i class="fas fa-phone-alt mr-3"></i> Layanan Darurat
+                        </h3>
+                        <p class="text-gray-700">Integrasi dengan layanan darurat (seperti LPSA, P2TP2A, dan hotline perlindungan anak) untuk respons cepat.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 border-2 border-black rounded-xl md:col-span-2 fade-in">
+                        <h3 class="text-xl font-semibold mb-3 text-[2e2e2e] flex items-center">
+                            <i class="fas fa-shield-alt mr-3"></i> Keamanan Platform
+                        </h3>
+                        <p class="text-gray-700">Desain antarmuka yang aman dari konten eksternal, dan sesuai standar perlindungan data anak.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Konten Section -->
+    <section id="konten" class="py-16 bg-[#59A8F4]">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-[#FEDF2E] border-2 border-black rounded-full">Konten Edukatif</h2>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="grid md:grid-cols-1 md:grid-cols-2 md:grid-cols-3 gap-7 place-items-start">
+                    <div class="bg-white rounded-xl  overflow-hidden card-hover fade-in border-2 border-black">
+                        <div class="h-33 bg-blue-200 flex items-center justify-center">
+                            <i class="fas fa-video text-blue-600 text-2xl"></i>
+                        </div>
+                        <div class="p-6 ">
+                            <h3 class="text-xl font-semibold mb-3">Video Animasi</h3>
+                            <p class="text-gray-600 mb-4">Konten edukatif dalam bentuk animasi yang menarik dan mudah dipahami.<br>dari channel youtube neuron</p>
+                            <a href="https://youtube.com/playlist?list=PL-qBdttHH_0MZeTePwS1McWLjqGmK_09p&si=gI6Rpd7VmOy9cXVZ" target="_blank">
+                                <button   class="text-blue-600 font-medium flex items-center" >
+                                    Tonton Sekarang <li  class="fas fa-arrow-right ml-2" ></li>
+                                </button>
+                            </a>   
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover fade-in border-2 border-black">
+                        <div class="h-33 bg-amber-200 flex items-center justify-center">
+                            <i class="fas fa-book-open text-amber-600 text-2xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-3">Cerita Interaktif</h3>
+                            <p class="text-gray-600 mb-4">Belajar melalui cerita dengan pilihan yang mempengaruhi alur cerita.</p>
+                            <a href="story.html">
+                                <button class="text-blue-600 font-medium flex items-center">
+                                    Baca Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </a>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="border-2 border-black bg-white rounded-xl shadow-md overflow-hidden card-hover fade-in">
+                        <div class="h-33 bg-green-200 flex items-center justify-center">
+                            <i class="fas fa-chart-bar text-green-600 text-2xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-3">Channel Edukasi</h3>
+                            <p class="text-gray-600 mb-4">Channel dengan Informasi penting tentang kesehatan dengan animasi yang mudah dipahami.<br>dari channel youtube dolewak</p>
+                            <a href="https://www.youtube.com/@dolewak" target="_blank">
+                                <button class="text-blue-600 font-medium flex items-center">
+                                    Channel Edukasi <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Kuis Section -->
+    <section id="kuis" class="py-16 bg-[#FEDF2D]">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-[#59A8F4]">Kuis Interaktif</h2>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <a href="kuis1.html">
+                    <div class="bg-white p-6 rounded-xl shadow-md card-hover fade-in ">
+                        <h3 class="text-xl font-semibold mb-3 text-blue-700">Kuis Dasar</h3>
+                        <p class="text-gray-600 mb-4">Untuk pemula yang baru memulai belajar tentang kesehatan reproduksi.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>15 menit</span>
+                            <i class="fas fa-question-circle ml-4 mr-2"></i>
+                            <span>10 pertanyaan</span>
+                        </div>
+                    </div>
+                </a>
+
+                
+                <a href="kuis2.html">
+                    <div class="bg-white p-6 rounded-xl shadow-md card-hover fade-in">
+                        <h3 class="text-xl font-semibold mb-3 text-blue-700">Kuis Lanjutan</h3>
+                        <p class="text-gray-600 mb-4">Untuk yang sudah memahami dasar-dasar kesehatan reproduksi.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>20 menit</span>
+                            <i class="fas fa-question-circle ml-4 mr-2"></i>
+                            <span>10 pertanyaan</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="kuis3.html">
+                    <div class="bg-white p-6 rounded-xl shadow-md card-hover fade-in">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-700">Kuis Situasional</h3>
+                    <p class="text-gray-600 mb-4">Simulasi situasi nyata untuk melatih respons terhadap situasi berisiko.</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span>3 menit</span>
+                        <i class="fas fa-question-circle ml-4 mr-2"></i>
+                        <span>3 skenario</span>
+                    </div>
+                </div>
+                </a>
+                
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Chatbot Section -->
+    <section id="chatbot" class="py-16 bg-blue-600 text-white">
+            <div class="container mx-auto px-4" id="chat-box">
+                <h2 class="text-3xl font-bold text-center mb-12">Chatbot AI</h2>
+                <a href="chatbot.html">
+                    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden fade-in">
+                    <div class="bg-blue-700 p-4 flex items-center">
+                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        
+                            <div>
+                                <h3 class="font-semibold">EduBot</h3>
+                                <p class="text-blue-200 text-sm">Online - Klick untuk memulai obrolan Anda</p>
+                            </div>
+                    </div>
+                </a>
+            </div>
+            
+
+
+            <div class="mt-12 text-center fade-in">
+                <h3 class="text-2xl font-semibold mb-6">Mengapa Chatbot Kami Aman?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-blue-500 p-6 rounded-xl">
+                        <i class="fas fa-user-secret text-3xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">Anonim</h4>
+                        <p>Percakapan Anda terjaga kerahasiaannya</p>
+                    </div>
+                    <div class="bg-blue-500 p-6 rounded-xl">
+                        <i class="fas fa-shield-alt text-3xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">Aman</h4>
+                        <p>Informasi pribadi Anda terlindungi</p>
+                    </div>
+                    <div class="bg-blue-500 p-6 rounded-xl">
+                        <i class="fas fa-check-circle text-3xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">Akurat</h4>
+                        <p>Informasi yang diberikan telah diverifikasi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Layanan Pengaduan Section -->
+    <section id="pengaduan" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-800">Layanan Pengaduan</h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-red-50 border-l-4 border-red-500 p-6 mb-8 rounded-r-lg fade-in">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-red-800">Penting!</h3>
+                            <p class="text-red-700">Jika Anda atau seseorang yang Anda kenal sedang dalam situasi darurat, segera hubungi layanan darurat di 119 atau pergi ke tempat yang aman.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-xl border-2 border-black p-6 card-hover fade-in">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-700 flex items-center">
+                            <i class="fas fa-phone-alt mr-3"></i> Hotline Darurat
+                        </h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-2 mr-3 text-blue-500"></i>
+                                <span><strong>119</strong> - Layanan Darurat Nasional</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-2 mr-3 text-blue-500"></i>
+                                <span><strong>0811 1111 119</strong> - Hotline Perlindungan Anak</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-xs mt-2 mr-3 text-blue-500"></i>
+                                <span><strong>021 3190 1555</strong> - P2TP2A (Pusat Pelayanan Terpadu Pemberdayaan Perempuan dan Anak)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    
+                    <div class="bg-white rounded-xl border-2 border-black p-6 card-hover fade-in">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-700 flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3"></i> Layanan Terdekat
+                        </h3>
+                        <p class="text-gray-700 mb-4"></p>
+                        <div class="flex">
+                                <form action="https://www.google.com/search" method="GET" target="_blank">
+                                    <label for="search-input">Temukan layanan perlindungan anak terdekat di wilayah Anda:</label><br><br>
+                                    <input type="text" id="search-input" name="q" placeholder="Cari di goggle" required class="flex-1 border border-gray-300 rounded-l-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <button type="submit" class="bg-[#FEDF2E] hover:bg-blue-700 text-white py-2 px-4 rounded-r-lg transition duration-300">Cari</button>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-2 border-black mt-8 bg-[#FEED8C] rounded-xl p-6 fade-in">
+                    <h3 class="text-xl font-semibold mb-4 text-black">Formulir Pengaduan Online</h3>
+                    <p class="text-gray-700 mb-4">Jika Anda ingin melaporkan secara online, silakan isi formulir di bawah ini. Data Anda akan dijaga kerahasiaannya.</p>
+                    
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="nama">Nama (opsional)</label>
+                            <input type="text" id="nama" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="laporan">Jelaskan kejadian yang ingin Anda laporkan</label>
+                            <textarea id="laporan" rows="4" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="kontak">Kontak (opsional)</label>
+                            <input type="text" id="kontak" class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Email atau nomor telepon">
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="anonim" class="h-4 w-4 text-[#FEDF2E] focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="anonim" class="ml-2 block text-sm text-gray-700">Laporkan secara anonim</label>
+                        </div>
+                        
+                        <button type="submit" class="bg-[#FEDF2E] hover:bg-black text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                            Kirim Laporan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Erosedu</h3>
+                    <p class="text-gray-400">Platform Digital untuk Pencegahan Kekerasan Seksual dan Peningkatan Literasi Seksualitas Sehat.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Menu</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#home" class="hover:text-white transition duration-300">Beranda</a></li>
+                        <li><a href="#kuis" class="hover:text-white transition duration-300">Kuis</a></li>
+                        <li><a href="#konten" class="hover:text-white transition duration-300">Konten</a></li>
+                        <li><a href="#chatbot" class="hover:text-white transition duration-300">Chatbot AI</a></li>
+                        <li><a href="#pengaduan" class="hover:text-white transition duration-300">Layanan Pengaduan</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>info@erosedu.id</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>+62 812 3456 7890</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3"></i>
+                            <span>Padang, Sumatra Barat</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Ikuti Kami</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-400 transition duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-red-600 transition duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; Erosedu</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMenu = document.getElementById('close-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+        
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        const mobileLinks = document.querySelectorAll('#mobile-menu a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Fade-in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        };
+        
+        // Check on load and scroll
+        window.addEventListener('load', fadeInOnScroll);
+        window.addEventListener('scroll', fadeInOnScroll);
+    
+
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        
+        
+        // URL server Flask Anda
+        const API_URL = 'http://127.0.0.1:5000/chat';
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        async function sendMessage() {
+            const messageText = userInput.value.trim();
+            if (messageText === '') return;
+
+            // 1. Tampilkan pesan pengguna
+            addMessageToChat('user', messageText);
+            userInput.value = '';
+
+            // Tampilkan pesan "loading"
+            const loadingMessage = addMessageToChat('bot', '...', 'loading');
+
+            try {
+                // 2. Kirim pesan ke Backend (Python/Flask)
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: messageText }),
+                });
+
+                // Hapus pesan "loading"
+                chatBox.removeChild(loadingMessage);
+
+                if (!response.ok) {
+                    throw new Error('Gagal mendapatkan respons dari server');
+                }
+
+                const data = await response.json();
+
+                // 3. Tampilkan respons TEKS dari bot
+                if (data.text) {
+                    addMessageToChat('bot', data.text);
+                }
+
+           
+
+            } catch (error) {
+                console.error('Error:', error);
+                // Hapus pesan "loading" jika terjadi error
+                if (chatBox.contains(loadingMessage)) {
+                    chatBox.removeChild(loadingMessage);
+                }
+                addMessageToChat('bot', 'Maaf, terjadi kesalahan.');
+            }
+        }
+
+        function addMessageToChat(sender, text, type = '') {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            if (type === 'loading') {
+                messageDiv.classList.add('loading');
+            }
+            messageDiv.innerText = text;
+            chatBox.appendChild(messageDiv);
+            scrollToBottom();
+            return messageDiv; // Kembalikan elemen untuk referensi (misal: menghapus loading)
+        }
+
+        
+        function scrollToBottom() {
+            // Auto-scroll ke bawah
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+    </script>
+</body>
+</html>

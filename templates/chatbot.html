@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Gemini</title>
+    <link rel="icon" href="F:\erosedu\static\img\e.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F0F0F1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        #chat-container {
+            width: 90%;
+            max-width: 500px;
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #chat-header {
+            background: linear-gradient(135deg, #FEE034 0%, #FEDF2E 50%, #FEDF2D 100%);
+            padding: 15px 20px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        #chat-header h2 {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        #back-btn {
+            background-color: #FFFFFF;
+            color: #333;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        #back-btn:hover {
+            background-color: #FEF9DB;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        #chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #FFFFFF;
+            position: relative;
+        }
+        
+        /* Animasi untuk bubble chat */
+        .message {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            max-width: 85%;
+            word-wrap: break-word;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .user {
+            background: linear-gradient(135deg, #FEE034 0%, #FEDF2E 50%, #FEDF2D 100%);
+            color: #333;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 2px 5px rgba(254, 223, 46, 0.3);
+        }
+        
+        .bot {
+            background-color: #FEF9DB;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        /* Animasi untuk pesan loading */
+        .loading {
+            display: flex;
+            align-items: center;
+            color: #888;
+            font-style: italic;
+        }
+        
+        .loading-dots {
+            display: inline-flex;
+            margin-left: 5px;
+        }
+        
+        .loading-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #888;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        
+        .loading-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+        
+        .loading-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+        
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+        
+        #input-area {
+            display: flex;
+            padding: 15px;
+            background-color: #FFFFFF;
+            border-top: 1px solid #F0F0F1;
+        }
+        
+        #user-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 1px solid #F0F0F1;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            background-color: #FEF9DB;
+            transition: all 0.3s ease;
+        }
+        
+        #user-input:focus {
+            outline: none;
+            border-color: #FEE034;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 2px rgba(254, 224, 52, 0.2);
+        }
+        
+        #send-btn {
+            padding: 12px 20px;
+            margin-left: 10px;
+            border: none;
+            background: linear-gradient(135deg, #FEE034 0%, #FEDF2E 50%, #FEDF2D 100%);
+            color: #333;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(254, 223, 46, 0.3);
+        }
+        
+        #send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(254, 223, 46, 0.4);
+        }
+        
+        #send-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Animasi untuk pesan yang dikirim */
+        .message.user {
+            animation-delay: 0.1s;
+        }
+        
+        .message.bot {
+            animation-delay: 0.3s;
+        }
+        
+        /* Animasi untuk container chat */
+        #chat-container {
+            animation: containerAppear 0.8s ease-out;
+        }
+        
+        @keyframes containerAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Efek hover pada pesan */
+        .message:hover {
+            transform: translateY(-2px);
+            transition: transform 0.3s ease;
+        }
+        
+        .user:hover {
+            box-shadow: 0 4px 8px rgba(254, 223, 46, 0.4);
+        }
+        
+        .bot:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Scrollbar custom */
+        #chat-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #chat-box::-webkit-scrollbar-track {
+            background: #F0F0F1;
+            border-radius: 10px;
+        }
+        
+        #chat-box::-webkit-scrollbar-thumb {
+            background: #FEDF2E;
+            border-radius: 10px;
+        }
+        
+        #chat-box::-webkit-scrollbar-thumb:hover {
+            background: #FEE034;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="chat-container">
+        <div id="chat-header">
+            <h2>Chatbot Gemini</h2>
+            <button id="back-btn">Kembali ke Beranda</button>
+        </div>
+        <div id="chat-box">
+            <div class="message bot">Halo! Tanyakan sesuatu padaku.</div>
+        </div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="Ketik pesanmu...">
+            <button id="send-btn">Kirim</button>
+        </div>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const backBtn = document.getElementById('back-btn');
+
+        // URL server Flask Anda
+        const API_URL = 'http://127.0.0.1:5000/chat';
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        backBtn.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        async function sendMessage() {
+            const messageText = userInput.value.trim();
+            if (messageText === '') return;
+
+            // 1. Tampilkan pesan pengguna
+            addMessageToChat('user', messageText);
+            userInput.value = '';
+
+            // Tampilkan pesan "loading" dengan animasi
+            const loadingMessage = addLoadingMessage();
+
+            try {
+                // 2. Kirim pesan ke Backend (Python/Flask)
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: messageText }),
+                });
+
+                // Hapus pesan "loading"
+                chatBox.removeChild(loadingMessage);
+
+                if (!response.ok) {
+                    throw new Error('Gagal mendapatkan respons dari server');
+                }
+
+                const data = await response.json();
+
+                // 3. Tampilkan respons TEKS dari bot
+                if (data.text) {
+                    addMessageToChat('bot', data.text);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                // Hapus pesan "loading" jika terjadi error
+                if (chatBox.contains(loadingMessage)) {
+                    chatBox.removeChild(loadingMessage);
+                }
+                addMessageToChat('bot', 'Maaf, terjadi kesalahan.');
+            }
+        }
+
+        function addMessageToChat(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            messageDiv.innerText = text;
+            chatBox.appendChild(messageDiv);
+            scrollToBottom();
+            return messageDiv;
+        }
+        
+        function addLoadingMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'bot', 'loading');
+            messageDiv.innerText = 'Mengetik';
+            
+            const dotsContainer = document.createElement('span');
+            dotsContainer.classList.add('loading-dots');
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('span');
+                dotsContainer.appendChild(dot);
+            }
+            
+            messageDiv.appendChild(dotsContainer);
+            chatBox.appendChild(messageDiv);
+            scrollToBottom();
+            return messageDiv;
+        }
+
+        function scrollToBottom() {
+            // Auto-scroll ke bawah
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>

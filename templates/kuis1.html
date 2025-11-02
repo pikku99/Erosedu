@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Edukasi Seksual</title>
+    <link rel="icon" href="F:\erosedu\static\img\e.png" type="image/png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-[#FEF9DB] min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-[#FEDF2D] drop-shadow-md">Kuis Edukasi Seksual</h1>
+            <p class="text-lg text-gray-700 mt-2">Uji pengetahuan Anda tentang kesehatan reproduksi</p>
+        </header>
+
+        <!-- Timer -->
+        <div id="timer-container" class="bg-white rounded-lg shadow-md p-4 mb-6 text-center">
+            <div class="flex justify-center items-center space-x-2">
+                <span class="text-xl font-semibold text-[#FEDF2D]">Waktu Tersisa:</span>
+                <span id="timer" class="text-2xl font-bold text-gray-800">15:00</span>
+            </div>
+        </div>
+
+        <!-- Kuis Container -->
+        <div id="quiz-container" class="bg-white rounded-lg shadow-md p-6">
+            <!-- Intro Screen -->
+            <div id="intro-screen" class="text-center">
+                <h2 class="text-2xl font-bold text-[#FEDF2D] mb-4">Kuis Dasar Kesehatan Reproduksi</h2>
+                <p class="text-gray-700 mb-6">Kuis ini dirancang untuk pemula yang baru memulai belajar tentang kesehatan reproduksi. Terdapat 10 soal yang harus diselesaikan dalam waktu 15 menit.</p>
+                <div class="bg-[#FEED8C] rounded-lg p-4 mb-6 text-left">
+                    <h3 class="font-semibold text-lg mb-2">Penting:</h3>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Informasi dalam kuis ini telah disesuaikan dengan perkembangan psikologi anak dan remaja</li>
+                        <li>Semua materi berdasarkan informasi ilmiah tentang kesehatan reproduksi</li>
+                        <li>Jawablah dengan jujur sesuai pengetahuan Anda</li>
+                    </ul>
+                </div>
+                <button id="start-btn" class="bg-[#FEDF2D] hover:bg-[#FEE034] text-gray-800 font-bold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105">
+                    Mulai Kuis
+                </button>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="questions-container" class="hidden">
+                <!-- Questions will be dynamically inserted here -->
+            </div>
+
+            <!-- Submit Button -->
+            <div id="submit-container" class="hidden text-center mt-8">
+                <button id="submit-btn" class="bg-[#FEDF2D] hover:bg-[#FEE034] text-gray-800 font-bold py-3 px-8 rounded-lg transition duration-300">
+                    Selesaikan Kuis
+                </button>
+            </div>
+
+            <!-- Results Container -->
+            <div id="results-container" class="hidden text-center">
+                <h2 class="text-2xl font-bold text-[#FEDF2D] mb-4">Hasil Kuis Anda</h2>
+                <div class="bg-[#F0F0F1] rounded-lg p-6 mb-6">
+                    <p class="text-xl font-semibold mb-2">Skor Anda: <span id="score" class="text-[#FEDF2D]">0</span>/100</p>
+                    <p id="result-message" class="text-gray-700"></p>
+                </div>
+                <button id="restart-btn" class="bg-[#FEDF2D] hover:bg-[#FEE034] text-gray-800 font-bold py-3 px-8 rounded-lg mr-4 transition duration-300">
+                    Ulangi Kuis
+                </button>
+                <button id="home-btn" class="bg-[#FDE764] hover:bg-[#FEE034] text-gray-800 font-bold py-3 px-8 rounded-lg transition duration-300">
+                    Kembali ke Beranda
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data kuis - pertanyaan dan jawaban
+        const quizData = [
+            {
+                question: "Apa yang dimaksud dengan kesehatan reproduksi?",
+                options: [
+                    "Hanya tentang organ reproduksi",
+                    "Keadaan sejahtera fisik, mental, dan sosial dalam segala hal yang berkaitan dengan sistem reproduksi",
+                    "Hanya tentang hubungan seksual",
+                    "Hanya tentang kehamilan dan persalinan"
+                ],
+                correct: 1,
+                explanation: "Kesehatan reproduksi adalah keadaan sejahtera fisik, mental, dan sosial secara utuh, tidak semata-mata bebas dari penyakit atau kecacatan, dalam segala hal yang berkaitan dengan sistem reproduksi, fungsi, dan prosesnya."
+            },
+            {
+                question: "Pada usia berapa biasanya seorang remaja perempuan mulai mengalami menstruasi?",
+                options: [
+                    "8-10 tahun",
+                    "10-15 tahun",
+                    "15-20 tahun",
+                    "20-25 tahun"
+                ],
+                correct: 1,
+                explanation: "Menstruasi pertama (menarche) biasanya terjadi antara usia 10-15 tahun, meskipun bisa lebih awal atau lebih lambat tergantung berbagai faktor seperti genetik, nutrisi, dan kesehatan."
+            },
+            {
+                question: "Apa fungsi utama dari organ reproduksi pria?",
+                options: [
+                    "Hanya untuk hubungan seksual",
+                    "Memproduksi sperma dan hormon testosteron",
+                    "Hanya untuk buang air kecil",
+                    "Tidak ada fungsi khusus"
+                ],
+                correct: 1,
+                explanation: "Organ reproduksi pria berfungsi untuk memproduksi, menyimpan, dan mengangkut sperma serta menghasilkan hormon testosteron yang penting untuk perkembangan karakteristik seksual pria."
+            },
+            {
+                question: "Apa yang dimaksud dengan masa pubertas?",
+                options: [
+                    "Masa ketika seseorang mulai sekolah",
+                    "Masa peralihan dari anak-anak menuju dewasa",
+                    "Masa ketika seseorang mulai bekerja",
+                    "Masa ketika seseorang menikah"
+                ],
+                correct: 1,
+                explanation: "Pubertas adalah masa peralihan dari anak-anak menuju dewasa yang ditandai dengan perubahan fisik, emosional, dan psikologis, serta kematangan organ reproduksi."
+            },
+            {
+                question: "Apa yang harus dilakukan untuk menjaga kesehatan reproduksi?",
+                options: [
+                    "Tidak perlu dilakukan apa-apa",
+                    "Hanya menjaga kebersihan saat sakit",
+                    "Menjaga kebersihan organ reproduksi, makan makanan bergizi, dan melakukan pemeriksaan kesehatan rutin",
+                    "Hanya penting bagi perempuan"
+                ],
+                correct: 2,
+                explanation: "Menjaga kesehatan reproduksi meliputi menjaga kebersihan organ reproduksi, mengonsumsi makanan bergizi, melakukan pemeriksaan kesehatan rutin, serta menghindari perilaku berisiko. Ini penting bagi laki-laki dan perempuan."
+            },
+            {
+                question: "Apa yang dimaksud dengan menstruasi?",
+                options: [
+                    "Penyakit pada organ reproduksi perempuan",
+                    "Proses pelepasan sel telur yang tidak dibuahi bersama lapisan dinding rahim",
+                    "Tanda adanya infeksi",
+                    "Proses pembuahan"
+                ],
+                correct: 1,
+                explanation: "Menstruasi adalah proses alami dimana tubuh melepaskan sel telur yang tidak dibuahi bersama dengan lapisan dinding rahim (endometrium) yang telah menebal untuk mempersiapkan kehamilan."
+            },
+            {
+                question: "Apa yang terjadi selama masa ovulasi?",
+                options: [
+                    "Terjadi menstruasi",
+                    "Sel telur dilepaskan dari ovarium",
+                    "Terjadi pembuahan",
+                    "Tidak terjadi apa-apa"
+                ],
+                correct: 1,
+                explanation: "Ovulasi adalah proses ketika sel telur yang matang dilepaskan dari ovarium dan siap untuk dibuahi oleh sperma. Ini biasanya terjadi sekitar pertengahan siklus menstruasi."
+            },
+            {
+                question: "Apa manfaat dari pendidikan kesehatan reproduksi?",
+                options: [
+                    "Tidak ada manfaatnya",
+                    "Hanya untuk mengetahui tentang hubungan seksual",
+                    "Memberikan pengetahuan untuk membuat keputusan yang bertanggung jawab tentang kesehatan reproduksi",
+                    "Hanya penting bagi orang dewasa"
+                ],
+                correct: 2,
+                explanation: "Pendidikan kesehatan reproduksi memberikan pengetahuan yang diperlukan untuk memahami tubuh, membuat keputusan yang bertanggung jawab, menjaga kesehatan, dan menghormati diri sendiri serta orang lain."
+            },
+            {
+                question: "Perubahan apa saja yang terjadi selama pubertas pada laki-laki?",
+                options: [
+                    "Hanya perubahan suara",
+                    "Tumbuhnya rambut di wajah, perubahan suara, dan perkembangan organ reproduksi",
+                    "Hanya perkembangan organ reproduksi",
+                    "Tidak ada perubahan signifikan"
+                ],
+                correct: 1,
+                explanation: "Selama pubertas, laki-laki mengalami berbagai perubahan termasuk tumbuhnya rambut di wajah dan tubuh, perubahan suara menjadi lebih berat, perkembangan organ reproduksi, dan pertumbuhan tinggi badan yang pesat."
+            },
+            {
+                question: "Mengapa penting untuk menghormati privasi tubuh sendiri dan orang lain?",
+                options: [
+                    "Tidak penting",
+                    "Karena diperintahkan orang tua",
+                    "Untuk melindungi diri dari pelecehan dan menghormati batasan pribadi",
+                    "Hanya untuk menghindari hukuman"
+                ],
+                correct: 2,
+                explanation: "Menghormati privasi tubuh sendiri dan orang lain penting untuk melindungi diri dari pelecehan, menghormati batasan pribadi, dan membangun hubungan yang sehat berdasarkan saling menghargai."
+            }
+        ];
+
+        // Variabel global
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+        let timeLeft = 900; // 15 menit dalam detik
+        let timerInterval;
+
+        // Elemen DOM
+        const introScreen = document.getElementById('intro-screen');
+        const questionsContainer = document.getElementById('questions-container');
+        const submitContainer = document.getElementById('submit-container');
+        const resultsContainer = document.getElementById('results-container');
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('start-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const homeBtn = document.getElementById('home-btn');
+
+        // Fungsi untuk memulai kuis
+        function startQuiz() {
+            introScreen.classList.add('hidden');
+            questionsContainer.classList.remove('hidden');
+            submitContainer.classList.remove('hidden');
+            
+            // Reset variabel
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            timeLeft = 900;
+            
+            // Tampilkan timer
+            updateTimerDisplay();
+            startTimer();
+            
+            // Tampilkan pertanyaan pertama
+            showQuestion();
+        }
+
+        // Fungsi untuk menampilkan pertanyaan
+        function showQuestion() {
+            const question = quizData[currentQuestion];
+            
+            let questionHTML = `
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Pertanyaan ${currentQuestion + 1}/${quizData.length}</h3>
+                    <p class="text-lg mb-6 bg-[#F0F0F1] p-4 rounded-lg">${question.question}</p>
+                    <div class="space-y-3">
+            `;
+            
+            question.options.forEach((option, index) => {
+                questionHTML += `
+                    <div class="flex items-center p-3 bg-[#FEF9DB] rounded-lg hover:bg-[#FEED8C] transition duration-200">
+                        <input type="radio" id="option-${index}" name="answer" value="${index}" class="hidden">
+                        <label for="option-${index}" class="flex items-center cursor-pointer w-full">
+                            <span class="flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#FEDF2D] mr-3">
+                                <span class="w-3 h-3 rounded-full bg-[#FEDF2D] hidden option-dot"></span>
+                            </span>
+                            <span>${option}</span>
+                        </label>
+                    </div>
+                `;
+            });
+            
+            questionHTML += `</div></div>`;
+            
+            questionsContainer.innerHTML = questionHTML;
+            
+            // Tambahkan event listener untuk opsi jawaban
+            document.querySelectorAll('input[name="answer"]').forEach((radio, index) => {
+                radio.addEventListener('change', () => {
+                    // Simpan jawaban pengguna
+                    userAnswers[currentQuestion] = index;
+                    
+                    // Tampilkan dot yang dipilih
+                    document.querySelectorAll('.option-dot').forEach(dot => {
+                        dot.classList.add('hidden');
+                    });
+                    document.querySelectorAll('input[name="answer"]:checked').forEach(checked => {
+                        const dot = checked.parentElement.querySelector('.option-dot');
+                        if (dot) dot.classList.remove('hidden');
+                    });
+                    
+                    // Auto lanjut ke pertanyaan berikutnya setelah 1 detik
+                    setTimeout(() => {
+                        if (currentQuestion < quizData.length - 1) {
+                            currentQuestion++;
+                            showQuestion();
+                        }
+                    }, 1000);
+                });
+            });
+        }
+
+        // Fungsi untuk memulai timer
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        // Fungsi untuk memperbarui tampilan timer
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Ubah warna timer jika waktu hampir habis
+            if (timeLeft <= 60) {
+                timerDisplay.classList.add('text-red-500');
+            } else {
+                timerDisplay.classList.remove('text-red-500');
+            }
+        }
+
+        // Fungsi untuk mengirim kuis
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            
+            // Hitung skor
+            score = 0;
+            quizData.forEach((question, index) => {
+                if (userAnswers[index] === question.correct) {
+                    score += 10;
+                }
+            });
+            
+            // Tampilkan hasil
+            showResults();
+        }
+
+        // Fungsi untuk menampilkan hasil
+        function showResults() {
+            questionsContainer.classList.add('hidden');
+            submitContainer.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+            
+            document.getElementById('score').textContent = score;
+            
+            let message = "";
+            if (score >= 80) {
+                message = "Selamat! Anda memiliki pemahaman yang sangat baik tentang dasar-dasar kesehatan reproduksi.";
+            } else if (score >= 60) {
+                message = "Bagus! Anda sudah memahami dasar-dasar kesehatan reproduksi, tetapi masih ada ruang untuk meningkatkan pengetahuan.";
+            } else {
+                message = "Anda perlu mempelajari lebih lanjut tentang kesehatan reproduksi. Jangan ragu untuk mencari informasi yang tepat dan terpercaya.";
+            }
+            
+            document.getElementById('result-message').textContent = message;
+        }
+
+        // Fungsi untuk mengulang kuis
+        function restartQuiz() {
+            resultsContainer.classList.add('hidden');
+            introScreen.classList.remove('hidden');
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', submitQuiz);
+        restartBtn.addEventListener('click', restartQuiz);
+        homeBtn.addEventListener('click', () => {
+            // Kembali ke beranda (reload halaman)
+            window.location.href = 'index.html';
+        });
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', () => {
+            // Pastikan semua konten dimuat dengan benar
+        });
+    </script>
+</body>
+</html>

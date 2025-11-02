@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Edukasi Seksual Lanjutan</title>
+    <!-- Tailwind CSS -->
+     <link rel="icon" href="F:\erosedu\static\img\e.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kuning-cerah': '#FEE034',
+                        'kuning-terang': '#FEDF2E',
+                        'kuning-emas': '#FEDF2D',
+                        'krem-muda': '#FEF9DB',
+                        'abu-muda': '#F0F0F1',
+                        'kuning-pastel': '#FDE764',
+                        'kuning-lemon': '#FEED8C',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-krem-muda min-h-screen py-8">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="mb-8 container mx-auto text-center"> 
+                <a href="index.html" class="inline-flex items-center  text-gray-800 font-medium py-1 px-2 rounded-lg home-btn ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                    </svg>
+                    Kembali ke Beranda
+                </a>
+        </div>
+        <!-- Header Kuis -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-kuning-emas mb-4">Kuis Edukasi Seksual Lanjutan</h1>
+            <p class="text-lg text-gray-700 mb-6">Untuk yang sudah memahami dasar-dasar kesehatan reproduksi</p>
+            
+            <!-- Timer -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-semibold">Waktu Tersisa:</span>
+                    <div id="timer" class="text-3xl font-bold text-kuning-emas">20:00</div>
+                </div>
+                <div class="w-full bg-abu-muda rounded-full h-4">
+                    <div id="progress-bar" class="bg-kuning-emas h-4 rounded-full transition-all duration-1000" style="width: 100%"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Kontainer Kuis -->
+        <main>
+            <!-- Layar Mulai -->
+            <div id="start-screen" class="bg-white rounded-xl shadow-lg p-8 text-center">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Selamat Datang di Kuis Edukasi Seksual Lanjutan</h2>
+                <p class="text-gray-600 mb-6">Kuis ini terdiri dari 10 pertanyaan yang harus diselesaikan dalam waktu 20 menit.</p>
+                <p class="text-gray-600 mb-8">Pertanyaan-pertanyaan dirancang berdasarkan informasi ilmiah tentang seksualitas dan kesehatan, dengan pertimbangan psikologi perkembangan.</p>
+                <button id="start-btn" class="bg-kuning-emas hover:bg-kuning-terang text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105">
+                    Mulai Kuis
+                </button>
+            </div>
+
+            <!-- Layar Kuis (Awalnya Disembunyikan) -->
+            <div id="quiz-container" class="hidden bg-white rounded-xl shadow-lg p-8">
+                <!-- Indikator Pertanyaan -->
+                <div class="flex justify-between items-center mb-8">
+                    <span id="question-number" class="text-lg font-semibold text-kuning-emas">Pertanyaan 1/10</span>
+                    <span id="score" class="text-lg font-semibold text-gray-700">Skor: 0</span>
+                </div>
+
+                <!-- Pertanyaan -->
+                <h2 id="question" class="text-xl font-semibold text-gray-800 mb-6"></h2>
+
+                <!-- Opsi Jawaban -->
+                <div id="options" class="space-y-4 mb-8"></div>
+
+                <!-- Navigasi -->
+                <div class="flex justify-between">
+                    <button id="prev-btn" class="bg-abu-muda hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition duration-300">
+                        Sebelumnya
+                    </button>
+                    <button id="next-btn" class="bg-kuning-emas hover:bg-kuning-terang text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                        Selanjutnya
+                    </button>
+                    <button id="submit-btn" class="hidden bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                        Kirim Jawaban
+                    </button>
+                </div>
+            </div>
+
+            <!-- Layar Hasil (Awalnya Disembunyikan) -->
+            <div id="results-container" class="hidden bg-white rounded-xl shadow-lg p-8 text-center">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Hasil Kuis Anda</h2>
+                <div class="mb-8">
+                    <div class="text-5xl font-bold text-kuning-emas mb-2" id="final-score">0</div>
+                    <div class="text-gray-600" id="score-message"></div>
+                </div>
+                <div id="explanations" class="text-left space-y-6 mb-8"></div>
+                <button id="restart-btn" class="bg-kuning-emas hover:bg-kuning-terang text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300">
+                    Ulangi Kuis
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Variabel kuis
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(10).fill(null);
+        let timeLeft = 20 * 60; // 20 menit dalam detik
+        let timerInterval;
+
+        // Pertanyaan kuis edukasi seksual lanjutan
+        // Konten dirancang dengan pertimbangan psikologi dan informasi ilmiah
+        const questions = [
+            {
+                question: "Manakah dari berikut ini yang merupakan komponen penting dalam hubungan seksual yang sehat dan bertanggung jawab?",
+                options: [
+                    "Komunikasi terbuka tentang kebutuhan dan batasan",
+                    "Asumsi bahwa pasangan sudah setuju dengan segala hal",
+                    "Tidak perlu membicarakan riwayat kesehatan reproduksi",
+                    "Mengabaikan penggunaan kontrasepsi jika tidak nyaman"
+                ],
+                correct: 0,
+                explanation: "Komunikasi terbuka tentang kebutuhan, keinginan, dan batasan adalah fondasi hubungan seksual yang sehat dan bertanggung jawab. Hal ini memastikan kedua pihak merasa dihormati dan aman."
+            },
+            {
+                question: "Apa yang dimaksud dengan consent (persetujuan) dalam konteks hubungan seksual?",
+                options: [
+                    "Persetujuan yang diberikan secara bebas, antusias, dan dapat ditarik kapan saja",
+                    "Persetujuan yang diasumsikan berdasarkan hubungan sebelumnya",
+                    "Persetujuan yang diberikan di bawah pengaruh alkohol atau obat-obatan",
+                    "Persetujuan yang tidak perlu dikomunikasikan secara verbal"
+                ],
+                correct: 0,
+                explanation: "Consent harus diberikan secara bebas, antusias, dan dapat ditarik kapan saja. Consent yang diberikan di bawah paksaan, tekanan, atau pengaruh zat tidak dianggap valid."
+            },
+            {
+                question: "Manakah dari berikut ini yang BUKAN termasuk infeksi menular seksual (IMS) yang umum?",
+                options: [
+                    "HIV/AIDS",
+                    "Gonore",
+                    "Klamidia",
+                    "Diabetes"
+                ],
+                correct: 3,
+                explanation: "Diabetes adalah kondisi metabolisme yang memengaruhi cara tubuh memproses gula darah, bukan infeksi menular seksual. HIV/AIDS, gonore, dan klamidia adalah contoh IMS."
+            },
+            {
+                question: "Apa manfaat utama dari penggunaan kontrasepsi yang konsisten dan benar?",
+                options: [
+                    "Hanya mencegah kehamilan yang tidak direncanakan",
+                    "Hanya mencegah infeksi menular seksual",
+                    "Mencegah kehamilan tidak direncanakan dan beberapa jenis juga mencegah IMS",
+                    "Tidak ada manfaat kesehatan, hanya mencegah kehamilan"
+                ],
+                correct: 2,
+                explanation: "Kontrasepsi memiliki berbagai manfaat. Kondom, misalnya, dapat mencegah kehamilan tidak direncanakan sekaligus mengurangi risiko penularan IMS. Metode kontrasepsi lain memiliki manfaat tambahan seperti mengatur siklus menstruasi."
+            },
+            {
+                question: "Perubahan fisik dan emosional selama masa pubertas terutama disebabkan oleh?",
+                options: [
+                    "Perubahan pola makan dan aktivitas fisik",
+                    "Perkembangan kemampuan kognitif yang pesat",
+                    "Perubahan hormonal dalam tubuh",
+                    "Pengaruh media dan tekanan sosial"
+                ],
+                correct: 2,
+                explanation: "Perubahan selama pubertas terutama disebabkan oleh fluktuasi dan peningkatan produksi hormon seperti estrogen dan testosteron, yang memicu perkembangan karakteristik seksual sekunder dan perubahan emosional."
+            },
+            {
+                question: "Apa yang dimaksud dengan orientasi seksual?",
+                options: [
+                    "Ketertarikan fisik semata kepada lawan jenis",
+                    "Kapasitas seseorang untuk merasakan ketertarikan romantis, emosional, dan/atau seksual terhadap orang lain",
+                    "Preferensi terhadap aktivitas seksual tertentu",
+                    "Identitas gender seseorang"
+                ],
+                correct: 1,
+                explanation: "Orientasi seksual mengacu pada kapasitas seseorang untuk merasakan ketertarikan romantis, emosional, dan/atau seksial terhadap orang lain, yang dapat beragam seperti heteroseksual, homoseksual, biseksual, atau aseksual."
+            },
+            {
+                question: "Mana dari berikut ini yang merupakan strategi efektif untuk mencegah penyebaran Infeksi Menular Seksual (IMS)?",
+                options: [
+                    "Hanya berhubungan seks dengan satu pasangan yang juga setia",
+                    "Menggunakan douching setelah berhubungan seks",
+                    "Mengandalkan metode penarikan (withdrawal)",
+                    "Hanya melakukan hubungan seks tanpa penetrasi"
+                ],
+                correct: 0,
+                explanation: "Dalam hubungan monogami jangka panjang di mana kedua pasangan telah dites dan bebas dari IMS, risiko penularan dapat diminimalkan. Namun, penggunaan kondom masih direkomendasikan untuk perlindungan ekstra."
+            },
+            {
+                question: "Apa yang termasuk dalam kesehatan reproduksi secara menyeluruh?",
+                options: [
+                    "Hanya kemampuan untuk memiliki keturunan",
+                    "Hanya bebas dari penyakit pada organ reproduksi",
+                    "Keadaan sejahtera fisik, mental, dan sosial dalam semua hal yang berkaitan dengan sistem reproduksi",
+                    "Hanya pengetahuan tentang metode kontrasepsi"
+                ],
+                correct: 2,
+                explanation: "Kesehatan reproduksi mencakup keadaan sejahtera fisik, mental, dan sosial secara menyeluruh dalam semua hal yang berkaitan dengan sistem reproduksi, fungsi, dan prosesnya, bukan hanya ketiadaan penyakit atau kelemahan."
+            },
+            {
+                question: "Mengapa pendidikan seks komprehensif penting bagi remaja?",
+                options: [
+                    "Karena mendorong remaja untuk aktif secara seksual",
+                    "Karena memberikan informasi akurat untuk membuat keputusan yang bertanggung jawab",
+                    "Karena fokus hanya pada pencegahan kehamilan",
+                    "Karena menggantikan peran orang tua dalam mendidik anak"
+                ],
+                correct: 1,
+                explanation: "Pendidikan seks komprehensif memberikan remaja pengetahuan akurat tentang perkembangan tubuh, hubungan, dan kesehatan reproduksi, yang membantu mereka membuat keputusan yang bertanggung jawab dan melindungi kesehatan mereka."
+            },
+            {
+                question: "Bagaimana sebaiknya seseorang merespons jika pasangannya menyatakan tidak nyaman dengan aktivitas seksual tertentu?",
+                options: [
+                    "Membujuknya agar tetap melakukan aktivitas tersebut",
+                    "Menghargai pernyataan tersebut dan menghentikan aktivitas",
+                    "Mengabaikan pernyataan tersebut dan melanjutkan",
+                    "Marah karena dianggap tidak kooperatif"
+                ],
+                correct: 1,
+                explanation: "Menghargai batasan dan ketidaknyamanan pasangan adalah kunci dalam hubungan yang sehat. Menghentikan aktivitas ketika pasangan menyatakan tidak nyaman menunjukkan rasa hormat dan pemahaman tentang pentingnya consent."
+            }
+        ];
+
+        // Elemen DOM
+        const startScreen = document.getElementById('start-screen');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const questionNumberElement = document.getElementById('question-number');
+        const scoreElement = document.getElementById('score');
+        const finalScoreElement = document.getElementById('final-score');
+        const scoreMessageElement = document.getElementById('score-message');
+        const explanationsElement = document.getElementById('explanations');
+        const timerElement = document.getElementById('timer');
+        const progressBar = document.getElementById('progress-bar');
+
+        const startBtn = document.getElementById('start-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // Format waktu menjadi menit:detik
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Update timer
+        function updateTimer() {
+            timerElement.textContent = formatTime(timeLeft);
+            
+            // Update progress bar
+            const totalTime = 20 * 60;
+            const percentage = (timeLeft / totalTime) * 100;
+            progressBar.style.width = `${percentage}%`;
+            
+            // Ubah warna menjadi merah saat waktu hampir habis
+            if (timeLeft < 60) {
+                timerElement.classList.add('text-red-500');
+                progressBar.classList.remove('bg-kuning-emas');
+                progressBar.classList.add('bg-red-500');
+            }
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                endQuiz();
+            } else {
+                timeLeft--;
+            }
+        }
+
+        // Memulai kuis
+        function startQuiz() {
+            startScreen.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            
+            // Mulai timer
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            showQuestion();
+        }
+
+        // Menampilkan pertanyaan
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionElement.textContent = question.question;
+            questionNumberElement.textContent = `Pertanyaan ${currentQuestionIndex + 1}/10`;
+            scoreElement.textContent = `Skor: ${score}`;
+            
+            // Kosongkan opsi sebelumnya
+            optionsElement.innerHTML = '';
+            
+            // Tambahkan opsi jawaban
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = `bg-abu-muda hover:bg-kuning-lemon rounded-lg p-4 cursor-pointer transition duration-300 ${
+                    userAnswers[currentQuestionIndex] === index ? 'bg-kuning-pastel border-2 border-kuning-emas' : ''
+                }`;
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsElement.appendChild(optionElement);
+            });
+            
+            // Tampilkan/sembunyikan tombol navigasi
+            prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
+            nextBtn.classList.toggle('hidden', currentQuestionIndex === questions.length - 1);
+            submitBtn.classList.toggle('hidden', currentQuestionIndex !== questions.length - 1);
+        }
+
+        // Memilih opsi
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Periksa apakah jawaban benar
+            if (optionIndex === questions[currentQuestionIndex].correct) {
+                // Hanya tambah skor jika belum dijawab sebelumnya
+                if (userAnswers[currentQuestionIndex] !== questions[currentQuestionIndex].correct) {
+                    score++;
+                }
+            } else {
+                // Kurangi skor jika sebelumnya benar sekarang salah
+                if (userAnswers[currentQuestionIndex] === questions[currentQuestionIndex].correct) {
+                    score--;
+                }
+            }
+            
+            scoreElement.textContent = `Skor: ${score}`;
+            showQuestion();
+        }
+
+        // Pertanyaan sebelumnya
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion();
+            }
+        }
+
+        // Pertanyaan berikutnya
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            }
+        }
+
+        // Akhiri kuis
+        function endQuiz() {
+            clearInterval(timerInterval);
+            quizContainer.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+            
+            // Hitung skor akhir
+            const finalScore = Math.max(0, score);
+            finalScoreElement.textContent = `${finalScore}/${questions.length}`;
+            
+            // Tampilkan pesan berdasarkan skor
+            if (finalScore >= 9) {
+                scoreMessageElement.textContent = "Luar biasa! Pemahaman Anda tentang edukasi seksual sangat baik.";
+            } else if (finalScore >= 7) {
+                scoreMessageElement.textContent = "Bagus! Anda memiliki pemahaman yang baik tentang edukasi seksual.";
+            } else if (finalScore >= 5) {
+                scoreMessageElement.textContent = "Cukup baik. Masih ada ruang untuk meningkatkan pemahaman Anda.";
+            } else {
+                scoreMessageElement.textContent = "Perlu belajar lebih lanjut. Pendidikan seksual penting untuk kesehatan dan hubungan yang baik.";
+            }
+            
+            // Tampilkan penjelasan untuk setiap pertanyaan
+            explanationsElement.innerHTML = '';
+            questions.forEach((question, index) => {
+                const explanationItem = document.createElement('div');
+                explanationItem.className = 'border-b border-gray-200 pb-4';
+                
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === question.correct;
+                
+                explanationItem.innerHTML = `
+                    <div class="flex items-start mb-2">
+                        <span class="font-semibold mr-2">${index + 1}.</span>
+                        <span>${question.question}</span>
+                    </div>
+                    <div class="ml-4">
+                        <div class="${isCorrect ? 'text-green-600' : 'text-red-600'}">
+                            Jawaban Anda: ${userAnswer !== null ? question.options[userAnswer] : 'Tidak dijawab'} 
+                            ${isCorrect ? '✓' : '✗'}
+                        </div>
+                        <div class="text-green-600">
+                            Jawaban Benar: ${question.options[question.correct]}
+                        </div>
+                        <div class="text-gray-600 mt-1">
+                            <span class="font-semibold">Penjelasan:</span> ${question.explanation}
+                        </div>
+                    </div>
+                `;
+                
+                explanationsElement.appendChild(explanationItem);
+            });
+        }
+
+        // Mulai ulang kuis
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(10).fill(null);
+            timeLeft = 20 * 60;
+            
+            resultsContainer.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+            
+            // Reset timer display
+            timerElement.textContent = formatTime(timeLeft);
+            timerElement.classList.remove('text-red-500');
+            progressBar.classList.remove('bg-red-500');
+            progressBar.classList.add('bg-kuning-emas');
+            progressBar.style.width = '100%';
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startQuiz);
+        prevBtn.addEventListener('click', previousQuestion);
+        nextBtn.addEventListener('click', nextQuestion);
+        submitBtn.addEventListener('click', endQuiz);
+        restartBtn.addEventListener('click', restartQuiz);
+    </script>
+</body>
+</html>

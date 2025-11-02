@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerita Interaktif: Belajar tentang Diri</title>
+    <link rel="icon" href="F:\erosedu\static\img\e.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'putih': '#FFFFFF',
+                        'kuning-cerah': '#FEE034',
+                        'kuning-terang': '#FEDF2E',
+                        'kuning-emas': '#FEDF2D',
+                        'krem-muda': '#FEF9DB',
+                        'abu-muda': '#F0F0F1',
+                        'kuning-pastel': '#FDE764',
+                        'kuning-lemon': '#FEED8C',
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .story-container {
+            transition: all 0.3s ease;
+        }
+        
+        .choice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-krem-muda font-poppins">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Cerita Interaktif: Belajar tentang Diri</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Pilih cerita dan buat keputusan yang mempengaruhi alur cerita. Belajar tentang perubahan tubuh, kesehatan, dan hubungan yang sehat.</p>
+        </header>
+
+        <!-- Story Selection -->
+        <div id="storySelection" class="bg-putih rounded-2xl shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Pilih Cerita</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-kuning-lemon rounded-xl p-4 cursor-pointer transition-all duration-300 hover:bg-kuning-pastel" onclick="selectStory('story1')">
+                    <h3 class="text-xl font-medium text-gray-800 mb-2">Hari Pertama di Sekolah Baru</h3>
+                    <p class="text-gray-600">Rina pindah ke sekolah baru dan menghadapi situasi sosial yang menantang.</p>
+                </div>
+                <div class="bg-kuning-lemon rounded-xl p-4 cursor-pointer transition-all duration-300 hover:bg-kuning-pastel" onclick="selectStory('story2')">
+                    <h3 class="text-xl font-medium text-gray-800 mb-2">Perubahan yang Menakjubkan</h3>
+                    <p class="text-gray-600">Andi mulai mengalami perubahan tubuh dan mencari informasi yang tepat.</p>
+                </div>
+                <div class="bg-kuning-lemon rounded-xl p-4 cursor-pointer transition-all duration-300 hover:bg-kuning-pastel" onclick="selectStory('story3')">
+                    <h3 class="text-xl font-medium text-gray-800 mb-2">Batasan yang Sehat</h3>
+                    <p class="text-gray-600">Sari belajar tentang batasan pribadi dan cara berkomunikasi dengan teman.</p>
+                </div>
+                <div class="bg-kuning-lemon rounded-xl p-4 cursor-pointer transition-all duration-300 hover:bg-kuning-pastel" onclick="selectStory('story4')">
+                    <h3 class="text-xl font-medium text-gray-800 mb-2">Kesehatan dan Kebersihan</h3>
+                    <p class="text-gray-600">Dito memahami pentingnya menjaga kebersihan tubuh selama masa pubertas.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Content -->
+        <div id="storyContent" class="hidden bg-putih rounded-2xl shadow-md p-6 mb-8 story-container">
+            <div id="storyHeader" class="flex justify-between items-center mb-6">
+                <h2 id="storyTitle" class="text-2xl font-semibold text-gray-800"></h2>
+                <button id="backButton" onclick="backToSelection()" class="bg-abu-muda text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">Kembali</button>
+            </div>
+            <div id="storyText" class="text-lg text-gray-700 mb-8 leading-relaxed"></div>
+            <div id="storyChoices" class="space-y-4"></div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progressContainer" class="hidden bg-putih rounded-2xl shadow-md p-4 mb-8">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-medium text-gray-700">Progress Cerita</span>
+                <span id="progressPercent" class="text-sm font-medium text-gray-700">0%</span>
+            </div>
+            <div class="w-full bg-abu-muda rounded-full h-2.5">
+                <div id="progressBar" class="bg-kuning-emas h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data cerita
+        const stories = {
+            story1: {
+                title: "Hari Pertama di Sekolah Baru",
+                steps: {
+                    start: {
+                        text: "Hari ini adalah hari pertama Rina di sekolah baru. Dia merasa gugup tetapi juga bersemangat. Saat istirahat, beberapa teman sekelas mengajaknya bergabung. Mereka bercanda dan tertawa. Tiba-tiba, salah satu teman, Budi, mulai membuat lelucon tentang tubuh Rina yang sedang berubah.",
+                        choices: [
+                            { text: "Rina ikut tertawa meski merasa tidak nyaman", next: "step1a" },
+                            { text: "Rina mengatakan dengan sopan bahwa dia tidak suka lelucon seperti itu", next: "step1b" }
+                        ]
+                    },
+                    step1a: {
+                        text: "Rina memilih untuk ikut tertawa meskipun merasa tidak nyaman. Budi dan teman-teman lain mengira Rina baik-baik saja dengan lelucon mereka, sehingga mereka terus melakukannya di hari-hari berikutnya. Rina semakin tidak nyaman tetapi takut untuk berbicara.",
+                        choices: [
+                            { text: "Rina terus diam dan tidak mengatakan apa-apa", next: "step2a" },
+                            { text: "Rina akhirnya memberanikan diri untuk berbicara dengan guru BP", next: "step2b" }
+                        ]
+                    },
+                    step1b: {
+                        text: "Rina dengan sopan mengatakan bahwa dia tidak suka lelucon tentang tubuhnya. Awalnya, Budi terkejut dan sedikit tersinggung, tetapi kemudian meminta maaf. Teman-teman lain menghargai keberanian Rina. Mereka pun beralih ke topik pembicaraan yang lebih menyenangkan.",
+                        choices: [
+                            { text: "Rina merasa lega dan melanjutkan hari dengan percaya diri", next: "step2c" },
+                            { text: "Rina menjelaskan mengapa lelucon tentang tubuh bisa menyakiti perasaan", next: "step2d" }
+                        ]
+                    },
+                    step2a: {
+                        text: "Rina terus diam selama beberapa minggu. Perasaannya semakin tertekan dan dia mulai menghindari teman-temannya. Nilainya pun turun karena tidak bisa berkonsentrasi di kelas.",
+                        choices: [
+                            { text: "Akhirnya Rina memutuskan untuk berbicara dengan orang tuanya", next: "end1" },
+                            { text: "Rina memilih untuk pindah sekolah lagi", next: "end2" }
+                        ]
+                    },
+                    step2b: {
+                        text: "Rina memberanikan diri untuk berbicara dengan guru Bimbingan dan Konseling. Guru tersebut sangat memahami dan memberikan dukungan. Guru tersebut juga mengadakan sesi khusus tentang menghargai perbedaan dan batasan pribadi untuk seluruh kelas.",
+                        choices: [
+                            { text: "Situasi di kelas membaik setelah sesi tersebut", next: "end3" },
+                            { text: "Rina belajar untuk lebih tegas menyampaikan perasaannya", next: "end4" }
+                        ]
+                    },
+                    step2c: {
+                        text: "Rina merasa lega telah menyampaikan perasaannya. Dia melanjutkan hari dengan percaya diri dan semakin mudah berteman dengan orang-orang yang menghargainya. Budi bahkan menjadi salah satu teman dekatnya karena menghargai kejujuran Rina.",
+                        choices: [
+                            { text: "Rina belajar bahwa komunikasi yang jujur penting dalam pertemanan", next: "end5" }
+                        ]
+                    },
+                    step2d: {
+                        text: "Rina menjelaskan dengan tenang mengapa lelucon tentang tubuh bisa menyakiti perasaan, terutama selama masa pubertas ketika remaja sangat sensitif tentang perubahan tubuh mereka. Teman-temannya mendengarkan dengan serius dan mulai memahami perspektif Rina.",
+                        choices: [
+                            { text: "Diskusi tersebut membuka percakapan sehat tentang perubahan tubuh", next: "end6" }
+                        ]
+                    },
+                    end1: {
+                        text: "Setelah berbicara dengan orang tuanya, Rina merasa lebih lega. Orang tuanya memberikan dukungan dan membantu Rina mengembangkan strategi untuk menghadapi situasi tersebut. Mereka juga menghubungi sekolah untuk memastikan Rina mendapat bantuan yang diperlukan.",
+                        choices: [
+                            { text: "Mulai cerita baru", next: "restart" }
+                        ]
+                    },
+                    end2: {
+                        text: "Rina memutuskan untuk pindah sekolah lagi. Meskipun ini bukan solusi ideal, Rina belajar bahwa kadang-kadang kita perlu membuat keputusan untuk melindungi kesejahteraan mental kita. Di sekolah baru, Rina lebih percaya diri untuk menyatakan batasannya sejak awal.",
+                        choices: [
+                            { text: "Mulai cerita baru", next: "restart" }
+                        ]
+                    },
+                    end3: {
+                        text: "Setelah sesi dengan guru BK, situasi di kelas membaik secara signifikan. Teman-teman Rina lebih memahami pentingnya menghargai perasaan orang lain. Rina merasa lebih diterima dan nyaman di lingkungan sekolah barunya.",
+                        choices: [
+                            { text: "Mulai cerita baru", next: "restart" }
+                        ]
+                    },
+                    end4: {
+                        text: "Pengalaman ini mengajarkan Rina pentingnya bersikap tegas tentang perasaannya. Dia belajar bahwa diam saat merasa tidak nyaman hanya akan memperburuk situasi. Keterampilan komunikasi ini membantu Rina dalam banyak aspek kehidupan selanjutnya.",
+                        choices: [
+                            { text: "Mulai cerita baru", next: "restart" }
+                        ]
+                    },
+                    end5: {
+                        text: "Rina menyadari bahwa komunikasi yang jujur dan terbuka adalah kunci dalam pertemanan yang sehat. Dia tidak hanya mendapatkan rasa hormat dari teman-temannya, tetapi juga belajar menghargai dirinya sendiri. Pengalaman ini membantu Rina tumbuh menjadi remaja yang percaya diri.",
+                        choices: [
+                            { text: "Mulai cerita baru", next: "restart" }
+                        ]
+                    },
+                    end6: {
+                        text: "Percakapan dengan teman-temannya berkembang menjadi diskusi yang sehat tentang perubahan tubuh selama masa pubertas. Mereka sepakat untuk saling mendukung dan menghargai satu sama lain. Rina bahkan membantu teman-temannya yang memiliki pertanyaan serupa tentang perubahan yang mereka alami.",
+                        choices: [
+                            { text: "Mulai cerita baru", next: "restart" }
+                        ]
+                    }
+                }
+            },
+            // Cerita lainnya akan ditambahkan di sini
+            story2: {
+                title: "Perubahan yang Menakjubkan",
+                steps: {
+                    start: {
+                        text: "Andi mulai memperhatikan perubahan pada tubuhnya. Suaranya kadang-kadang pecah, dan dia mulai tumbuh jerawat. Dia merasa malu dan bingung dengan semua perubahan ini. Suatu hari, teman sekamarnya mengejek suaranya yang pecah.",
+                        choices: [
+                            { text: "Andi diam saja dan merasa malu", next: "step1a" },
+                            { text: "Andi menjelaskan bahwa itu adalah bagian normal dari pubertas", next: "step1b" }
+                        ]
+                    },
+                    // Langkah-langkah cerita 2 akan dilanjutkan...
+                }
+            }
+        };
+
+        // Variabel state
+        let currentStory = null;
+        let currentStep = 'start';
+        const storyProgress = {};
+
+        // Fungsi untuk memilih cerita
+        function selectStory(storyId) {
+            currentStory = storyId;
+            currentStep = 'start';
+            storyProgress[storyId] = 0;
+            
+            document.getElementById('storySelection').classList.add('hidden');
+            document.getElementById('storyContent').classList.remove('hidden');
+            document.getElementById('progressContainer').classList.remove('hidden');
+            
+            updateStoryDisplay();
+        }
+
+        // Fungsi untuk kembali ke pemilihan cerita
+        function backToSelection() {
+            document.getElementById('storySelection').classList.remove('hidden');
+            document.getElementById('storyContent').classList.add('hidden');
+            document.getElementById('progressContainer').classList.add('hidden');
+        }
+
+        // Fungsi untuk memperbarui tampilan cerita
+        function updateStoryDisplay() {
+            const story = stories[currentStory];
+            const step = story.steps[currentStep];
+            
+            document.getElementById('storyTitle').textContent = story.title;
+            document.getElementById('storyText').textContent = step.text;
+            
+            const choicesContainer = document.getElementById('storyChoices');
+            choicesContainer.innerHTML = '';
+            
+            step.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.textContent = choice.text;
+                button.className = 'w-full text-left bg-kuning-lemon hover:bg-kuning-pastel text-gray-800 font-medium py-3 px-4 rounded-lg transition-all duration-300 choice-btn';
+                button.onclick = () => makeChoice(choice.next);
+                choicesContainer.appendChild(button);
+            });
+            
+            updateProgress();
+        }
+
+        // Fungsi untuk membuat pilihan
+        function makeChoice(nextStep) {
+            if (nextStep === 'restart') {
+                backToSelection();
+                return;
+            }
+            
+            currentStep = nextStep;
+            storyProgress[currentStory] += 25; // Simulasi progress
+            updateStoryDisplay();
+        }
+
+        // Fungsi untuk memperbarui progress bar
+        function updateProgress() {
+            const progress = storyProgress[currentStory] || 0;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressPercent').textContent = `${progress}%`;
+        }
+    </script>
+</body>
+</html>
